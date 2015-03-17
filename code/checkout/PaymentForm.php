@@ -76,8 +76,12 @@ class PaymentForm extends CheckoutForm{
 			if($this->orderProcessor->placeOrder()){
 				return $this->controller->redirect($this->getSuccessLink());
 			}
-			//TODO: store error for display?
-			return $this->controller->redirectBack();
+
+			if($failure = $this->getFailureLink()){
+				return $this->controller->redirect($this->getFailureLink());
+			} else {
+				return $this->controller->redirectBack();
+			}
 		}
 
 		$paymentResponse = $this->orderProcessor->makePayment(
