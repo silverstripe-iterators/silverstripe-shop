@@ -126,6 +126,7 @@ class ShoppingCart {
 			return $this->error(_t("ShoppingCart.PRODUCTNOTFOUND", "Product not found."));
 		}
 		$item = $this->findOrMakeItem($buyable, $filter);
+
 		if(!$item) {
 			
 			return false;

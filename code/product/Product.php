@@ -222,10 +222,10 @@ class Product extends Page implements Buyable {
 			$allowpurchase = true;
 		}
 		// Standard mechanism for accepting permission changes from decorators
-		$extended = $this->extendedCan('canPurchase', $member, $quantity);
-		if($allowpurchase && $extended !== null) {
-			$allowpurchase = $extended;
-		}
+		//	$extended = $this->extendedCan('canPurchase', $member, $quantity);
+		// if($allowpurchase && $extended !== null) {
+		// 	$allowpurchase = $extended;
+		// }
 
 		return $allowpurchase;
 	}
