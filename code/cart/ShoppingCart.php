@@ -65,6 +65,7 @@ class ShoppingCart {
 				"ID" => $sessionid
 			))->first();
 		}
+
 		if(!$this->calculateonce && $this->order) {
 			$this->order->calculate();
 			$this->calculateonce = true;
@@ -84,6 +85,7 @@ class ShoppingCart {
 		if(!$cart->IsCart()) {
 			trigger_error("Passed Order object is not cart status", E_ERROR);
 		}
+		
 		$this->order = $cart;
 		Session::set(self::$cartid_session_name, $cart->ID);
 

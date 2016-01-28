@@ -200,9 +200,10 @@ class Order extends DataObject {
 
 	/**
 	 * Returns the subtotal of the items for this order.
+	 *
 	 */
 	public function SubTotal() {
-		if($this->Items()->exists()){
+		if($this->Items()->exists()) {
 			return $this->Items()->SubTotal();
 		}
 		
@@ -211,14 +212,14 @@ class Order extends DataObject {
 
 	/**
 	 * Calculate the total
-	 * @return the final total
+	 *
+	 * @return float
 	 */
 	public function calculate() {
-		if(!$this->IsCart()){
-			return $this->Total;
-		}
 		$calculator = new OrderTotalCalculator($this);
-		return $this->Total = $calculator->calculate();
+		$this->Total = $calculator->calculate();
+
+		return $this->Total;
 	}
 
 	/**
@@ -227,6 +228,7 @@ class Order extends DataObject {
 	 */
 	public function getModifier($className, $forcecreate = false) {
 		$calculator = new OrderTotalCalculator($this);
+		
 		return $calculator->getModifier($className, $forcecreate);
 	}
 

@@ -188,6 +188,7 @@ class OrderProcessor{
 
 	/**
 	 * Takes an order from being a cart to awaiting payment.
+	 *
 	 * @param Member $member - assign a member to the order
 	 * @return boolean - success/failure
 	 */

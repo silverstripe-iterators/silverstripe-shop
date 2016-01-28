@@ -7,7 +7,7 @@
  * and subsequently the total of the order.
  * Caches to prevent recalculation, unless dirty.
  */
-class OrderTotalCalculator{
+class OrderTotalCalculator {
 	
 	protected $order;
 
@@ -22,11 +22,12 @@ class OrderTotalCalculator{
 		$existingmodifiers = $this->order->Modifiers();
 		$modifierclasses = Order::config()->modifiers;
 		//check if modifiers are even in use
-		if(!is_array($modifierclasses) || empty($modifierclasses)){
+		if(!is_array($modifierclasses) || empty($modifierclasses)) {
 			return $runningtotal;
 		}
-		foreach($modifierclasses as $ClassName){
-			if($modifier = $this->getModifier($ClassName)){
+
+		foreach($modifierclasses as $ClassName) {
+			if($modifier = $this->getModifier($ClassName)) {
 				$modifier->Sort = $sort;
 				$runningtotal = $modifier->modify($runningtotal);
 				if($modifier->isChanged()){
@@ -44,14 +45,16 @@ class OrderTotalCalculator{
 				}
 			}
 		}
-		//prevent negative sales from ever occurring
-		if($runningtotal < 0){
+		
+		// prevent negative sales from ever occurring
+		if($runningtotal < 0) {
 			SS_Log::log(
 				"Order (ID = $order->ID) was calculated to equal $runningtotal.\n
 				Order totals should never be negative!\n
 				The order total was set to $0",
 				SS_Log::ERR
 			);
+
 			$runningtotal = 0;
 		}
 
