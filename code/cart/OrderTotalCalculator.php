@@ -21,7 +21,8 @@ class OrderTotalCalculator {
 		$sort = 1;
 		$existingmodifiers = $this->order->Modifiers();
 		$modifierclasses = Order::config()->modifiers;
-		//check if modifiers are even in use
+		
+		// check if modifiers are even in use
 		if(!is_array($modifierclasses) || empty($modifierclasses)) {
 			return $runningtotal;
 		}
@@ -36,10 +37,10 @@ class OrderTotalCalculator {
 			}
 			$sort++;
 		}
-		//clear old modifiers out
-		if($existingmodifiers){
-			foreach($existingmodifiers as $modifier){
-				if(!in_array($modifier->ClassName, $modifierclasses)){
+		
+		if($existingmodifiers) {
+			foreach($existingmodifiers as $modifier) {
+				if(!in_array($modifier->ClassName, $modifierclasses)) {
 					$modifier->delete();
 					$modifier->destroy();
 				}

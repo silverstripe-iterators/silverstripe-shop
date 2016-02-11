@@ -217,6 +217,7 @@ class Order extends DataObject {
 	 */
 	public function calculate() {
 		$calculator = new OrderTotalCalculator($this);
+
 		$this->Total = $calculator->calculate();
 
 		return $this->Total;
@@ -228,7 +229,7 @@ class Order extends DataObject {
 	 */
 	public function getModifier($className, $forcecreate = false) {
 		$calculator = new OrderTotalCalculator($this);
-		
+
 		return $calculator->getModifier($className, $forcecreate);
 	}
 
