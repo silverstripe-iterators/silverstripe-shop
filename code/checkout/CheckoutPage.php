@@ -91,6 +91,7 @@ class CheckoutPage_Controller extends Page_Controller {
 			'OrderForm',
 			Injector::inst()->create("CheckoutComponentConfig", ShoppingCart::curr())
 		);
+		
 		$form->Cart = $this->Cart();
 		$this->extend('updateOrderForm', $form);
 

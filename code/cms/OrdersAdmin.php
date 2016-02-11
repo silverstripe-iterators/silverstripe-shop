@@ -21,9 +21,11 @@ class OrdersAdmin extends ModelAdmin{
 		$context = $this->getSearchContext();
 		$params = $this->request->requestVar('q');
 		//TODO update params DateTo, to include the day, ie 23:59:59
+		$list = $context->getResults($params);
 
-		$list = $context->getResults($params)
-			->exclude("Status",Order::config()->hidden_status); //exclude hidden statuses
+		if(!isset($params['Status']) && !$params['Status']) {
+			$list->exclude("Status", Order::config()->hidden_status); 
+		}
 
 		$this->extend('updateList', $list);
 

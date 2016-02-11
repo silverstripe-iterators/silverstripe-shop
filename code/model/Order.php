@@ -153,9 +153,13 @@ class Order extends DataObject {
 			LiteralField::create('Notes', $fs.$this->renderWith("OrderAdmin_Notes").$fe)
 		));
 		$this->extend('updateCMSFields', $fields);
+
 		$payments = $fields->fieldByName("Root.Payments.Payments");
-		$fields->removeByName("Payments");
-		$fields->insertBefore($payments, "Notes");
+		
+		if($payments) {
+			$fields->removeByName("Payments");
+			$fields->insertBefore($payments, "Notes");
+		}
 
 		return $fields;
 	}
@@ -165,10 +169,20 @@ class Order extends DataObject {
 	 * @return SearchContext the updated search context
 	 */
 	public function getDefaultSearchContext() {
+		$statuses = array_combine(
+			self::config()->placed_status, 
+			self::config()->placed_status
+		);
+
+		$statuses = array_merge($statuses, array_combine(
+			self::config()->hidden_status, 
+			self::config()->hidden_status
+		));
+
 		$context = parent::getDefaultSearchContext();
 		$fields = $context->getFields();
 		$fields->fieldByName('Status')
-			->setSource(array_combine(self::config()->placed_status, self::config()->placed_status));
+			->setSource($statuses);
 		//add date range filtering
 		$fields->insertBefore(DateField::create("DateFrom", "Date from")
 			->setConfig('showcalendar', true), 'Status');
