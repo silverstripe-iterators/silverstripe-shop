@@ -150,8 +150,14 @@ class Order extends DataObject {
 			LiteralField::create('Customer', $fs.$this->renderWith("OrderAdmin_Customer").$fe),
 			LiteralField::create('Addresses', $fs.$this->renderWith("OrderAdmin_Addresses").$fe),
 			LiteralField::create('Content', $fs.$this->renderWith("OrderAdmin_Content").$fe),
-			LiteralField::create('Notes', $fs.$this->renderWith("OrderAdmin_Notes").$fe)
+			LiteralField::create('Notes', $fs.$this->renderWith("OrderAdmin_Notes").$fe),
+			new LiteralField('PrintLink', sprintf(
+				"<a href='OrderAdminPrintController/printorder/%s?SecurityID=%s' target='_blank'>Print Receipt</a>",
+				$this->ID,
+				SecurityToken::inst()->getValue()
+			))
 		));
+
 		$this->extend('updateCMSFields', $fields);
 
 		$payments = $fields->fieldByName("Root.Payments.Payments");
@@ -323,8 +329,9 @@ class Order extends DataObject {
 		return false;
 	}
 
-	/*
+	/**
 	 * Prevent deleting orders.
+	 *
 	 * @return boolean
 	 */
 	public function canDelete($member = null) {
@@ -333,6 +340,7 @@ class Order extends DataObject {
 
 	/**
 	 * Check if an order can be edited.
+	 *
 	 * @return boolean
 	 */
 	public function canEdit($member = null) {
@@ -341,11 +349,32 @@ class Order extends DataObject {
 
 	/**
 	 * Prevent standard creation of orders.
+	 *
 	 * @return boolean
 	 */
 	public function canCreate($member = null) {
 		return false;
 	}
+
+	/**
+	 * Can view
+	 *
+	 * @return boolean
+	 */
+	public function canView($member = null) {
+		if(!$member) $member = Member::currentUser();
+
+		if($this->MemberID) {
+			if(!$member || $this->MemberID !== $member->ID) {
+				if(!Permission::check('CMS_ACCESS_OrdersAdmin')) {
+					return false;
+				}
+			} 
+		}
+
+		return true;
+	}
+
 
 	/**
 	 * Return the currency of this order.
