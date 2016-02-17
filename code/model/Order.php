@@ -158,6 +158,8 @@ class Order extends DataObject {
 			))
 		));
 
+		$fields->addFieldToTab('Root.Modifiers', new GridField('Modifiers', 'Modifiers', $this->Modifiers()));
+
 		$this->extend('updateCMSFields', $fields);
 
 		$payments = $fields->fieldByName("Root.Payments.Payments");
