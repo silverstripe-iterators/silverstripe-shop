@@ -189,7 +189,16 @@ class ProductVariation extends DataObject implements Buyable {
 		return $this->Item()->addLink($this->ProductID, $this->ID);
 	}
 
-	public function createItem($quantity = 1,$filter = array()){
+	/**
+	 * @param $action string
+	 *
+	 * @return string
+	 */
+	public function Link($action = null) {
+		return ($this->ProductID) ? $this->Product()->Link($action) : false;
+	}
+
+	public function createItem($quantity = 1,$filter = array()) {
 		$orderitem = self::config()->order_item;
 		$item = new $orderitem();
 		$item->ProductID = $this->ProductID;
@@ -203,7 +212,7 @@ class ProductVariation extends DataObject implements Buyable {
 		return $item;
 	}
 
-	public function sellingPrice(){
+	public function sellingPrice() {
 		$price = $this->Price;
 		if ($price == 0 && $this->Product() && $this->Product()->sellingPrice()){
 			$price = $this->Product()->sellingPrice();
